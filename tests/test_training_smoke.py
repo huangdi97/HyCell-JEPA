@@ -23,6 +23,7 @@ def test_train_local_yaml_config_loads() -> None:
 
     assert config["encoder_checkpoint"] == "outputs/checkpoints/best_encoder.pt"
     assert config["jepa_checkpoint"] == "outputs/checkpoints/best_jepa.pt"
+    assert config["jepa_metrics_path"] == "outputs/reports/jepa_metrics.json"
     assert config["auto_prepare_toy_scores"] is True
 
 
@@ -67,6 +68,17 @@ def test_train_encoder_writes_local_artifacts() -> None:
     assert Path(result["encoder_checkpoint"]).exists()
     assert Path(result["embeddings_path"]).exists()
     assert Path(result["metrics_path"]).exists()
+
+
+def test_train_jepa_writes_goal3_compat_artifacts() -> None:
+    config = _smoke_config("outputs/test_tmp/jepa_goal3_compat")
+    config["jepa_checkpoint"] = "outputs/test_tmp/jepa_goal3_compat/best_jepa.pt"
+    config["jepa_metrics_path"] = "outputs/test_tmp/jepa_goal3_compat/jepa_metrics.json"
+
+    result = train_toy_jepa(config)
+
+    assert Path(result["jepa_checkpoint"]).exists()
+    assert Path(result["jepa_metrics_path"]).exists()
 
 
 def test_train_and_evaluate_cli_smoke() -> None:

@@ -284,3 +284,39 @@ Known limitations:
 
 Next recommended step:
 Proceed to Goal 3 after preserving the Goal 2 local training fix.
+
+### 2026-07-05 - Goal 2.5 JEPA checkpoint compatibility fix
+
+Fixed Goal 3 compatibility expectations before starting adapter, verifier, planner, or demo work.
+
+What was fixed:
+- JEPA training now writes the Goal 3-facing checkpoint path `outputs/checkpoints/best_jepa.pt`.
+- JEPA training now writes the Goal 3-facing report path `outputs/reports/jepa_metrics.json`.
+- Backward-compatible artifacts under `outputs/jepa_toy/` are still written.
+- `configs/train_local.yaml` now includes `jepa_metrics_path`.
+- Smoke tests now assert that JEPA training creates the expected compatibility checkpoint and report files.
+
+Files updated:
+- `configs/train_local.yaml`
+- `scripts/train_jepa.py`
+- `src/hycell/training.py`
+- `tests/test_training_smoke.py`
+- `docs/progress_log.md`
+
+Commands run:
+
+```bash
+pytest
+python scripts/train_encoder.py --config configs/train_local.yaml
+python scripts/train_jepa.py --config configs/train_local.yaml
+test -f outputs/checkpoints/best_jepa.pt
+test -f outputs/reports/jepa_metrics.json
+```
+
+Known limitations:
+- The `.pt` checkpoint remains a lightweight NumPy payload with a `.pt` filename for compatibility, not a PyTorch checkpoint.
+- This fix does not implement Goal 3 components: no HDF Adapter, Biological Verifier, Target-State Planner, benchmark script, or Streamlit demo.
+- Generated artifacts under `outputs/` remain ignored and should not be committed.
+
+Next recommended step:
+Start Goal 3 using `outputs/checkpoints/best_encoder.pt`, `outputs/checkpoints/best_jepa.pt`, `outputs/embeddings/embeddings.npy`, and `outputs/reports/jepa_metrics.json` as the local compatibility artifacts.

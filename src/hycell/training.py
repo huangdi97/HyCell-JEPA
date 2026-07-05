@@ -206,10 +206,15 @@ def train_toy_jepa(config: dict[str, Any]) -> dict[str, Any]:
     }
     metadata_path.write_text(json.dumps(metadata, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     metrics_path.write_text(json.dumps(metrics, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    if "metrics_path" in config:
-        report_metrics_path = Path(config["metrics_path"])
-        report_metrics_path.parent.mkdir(parents=True, exist_ok=True)
-        report_metrics_path.write_text(json.dumps(metrics, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    if "jepa_metrics_path" in config:
+        jepa_metrics_path = Path(config["jepa_metrics_path"])
+    elif "reports_dir" in config:
+        jepa_metrics_path = Path(config["reports_dir"]) / "jepa_metrics.json"
+    else:
+        jepa_metrics_path = None
+    if jepa_metrics_path is not None:
+        jepa_metrics_path.parent.mkdir(parents=True, exist_ok=True)
+        jepa_metrics_path.write_text(json.dumps(metrics, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
     return {
         "dataset": dataset,
@@ -219,6 +224,8 @@ def train_toy_jepa(config: dict[str, Any]) -> dict[str, Any]:
         "model_path": model_path,
         "metadata_path": metadata_path,
         "metrics_path": metrics_path,
+        "jepa_checkpoint": Path(config["jepa_checkpoint"]) if "jepa_checkpoint" in config else None,
+        "jepa_metrics_path": jepa_metrics_path,
     }
 
 

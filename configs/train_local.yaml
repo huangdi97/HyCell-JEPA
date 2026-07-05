@@ -39,6 +39,7 @@ encoder_checkpoint: outputs/checkpoints/best_encoder.pt
 jepa_checkpoint: outputs/checkpoints/best_jepa.pt
 embeddings_path: outputs/embeddings/embeddings.npy
 metrics_path: outputs/reports/metrics.json
+jepa_metrics_path: outputs/reports/jepa_metrics.json
 
 model_filename: toy_jepa_model.npz
 metadata_filename: toy_jepa_metadata.json

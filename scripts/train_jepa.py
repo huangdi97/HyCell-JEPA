@@ -31,7 +31,11 @@ def main() -> int:
         f"train_mse={metrics['train_mse']:.6f} eval_mse={metrics['eval_mse']:.6f}"
     )
     print(f"Model: {result['model_path']}")
+    if result.get("jepa_checkpoint"):
+        print(f"JEPA checkpoint: {result['jepa_checkpoint']}")
     print(f"Metrics: {result['metrics_path']}")
+    if result.get("jepa_metrics_path"):
+        print(f"JEPA report metrics: {result['jepa_metrics_path']}")
     return 0
 
 
