@@ -1,0 +1,18 @@
+{
+  "scores_path": "outputs/toy_data/gene_set_scores.csv",
+  "model_path": "outputs/jepa_toy/toy_jepa_model.npz",
+  "benchmark_config": "configs/benchmark_toy.yaml",
+  "cell_system": "toy_hdf",
+  "default_action": "regeneration",
+  "default_context": "t0->t1|toy_hdf",
+  "default_source_action": "control",
+  "default_source_timepoint": "t0",
+  "target_state": {
+    "senescence": 0.85,
+    "proliferation": 2.25,
+    "ecm_remodeling": 2.70,
+    "stress_inflammation": 0.50,
+    "reprogramming_plasticity": 0.35,
+    "viability_qc_proxy": 2.25
+  }
+}

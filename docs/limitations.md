@@ -11,3 +11,6 @@ The MVP focuses on compact biological belief states and perturbation transitions
 
 ## Not A Full Lingshu-Cell-Scale Model
 The MVP does not reproduce Lingshu-Cell and does not implement full 18,000-gene transcriptome diffusion. It is a small engineering prototype designed to stay runnable on the target hardware.
+
+## Planner And Demo Are Not Recommendations
+The current planner and Streamlit demo operate on toy compact readout states only. Planned action sequences are software validation outputs, not experimental protocols, clinical recommendations, or biological intervention advice.

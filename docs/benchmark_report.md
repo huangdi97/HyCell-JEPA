@@ -1,7 +1,7 @@
 # Benchmark Report
 
 ## Status
-Goal 2 toy JEPA smoke benchmark has been run on the deterministic toy gene-set score table.
+Goal 3 toy end-to-end benchmark has been run on the deterministic toy gene-set score table.
 
 ## Latest Commands
 
@@ -10,6 +10,7 @@ python scripts/make_toy_data.py --config configs/toy_data.yaml
 python scripts/score_gene_sets.py --input outputs/toy_data/toy_cells.csv --config configs/gene_sets.yaml
 python scripts/train_jepa.py --config configs/jepa_toy.yaml
 python scripts/evaluate_jepa.py --config configs/jepa_toy.yaml
+python scripts/benchmark_toy.py --config configs/benchmark_toy.yaml
 pytest
 ```
 
@@ -20,6 +21,10 @@ pytest
 - Training MSE: `0.000000375`
 - Held-out eval MSE: `0.058339536`
 - All-transition evaluation MSE: `0.014585165`
+- Goal 3 benchmark transition MSE: `0.014585165`
+- Verifier status counts: `{"warn": 8}`
+- Planner sequence for configured target: `regeneration -> control`
+- Planner final distance: `0.183562100`
 
 Per-feature all-transition MSE:
 - `ecm_remodeling`: `0.005293832`
@@ -30,11 +35,9 @@ Per-feature all-transition MSE:
 - `viability_qc_proxy`: `0.000450512`
 
 ## Remaining Planned Benchmarks
-- Verifier rule behavior.
-- Planner target-state sanity checks.
-- Streamlit demo smoke test.
 - Real-data schema validation smoke tests.
 - Runtime and memory checks on local CPU/GPU.
+- Demo browser interaction beyond launch/import smoke.
 
 ## Reporting Rules
 - Record commands, config files, metrics, runtime, and hardware.
@@ -42,4 +45,4 @@ Per-feature all-transition MSE:
 - Store generated benchmark outputs in `outputs/`.
 
 ## Interpretation
-The current metrics only show that the compact toy transition pipeline can train and evaluate end to end. They do not validate biological mechanisms or intervention effects.
+The current metrics only show that the compact toy transition pipeline, HDF adapter, verifier, planner, benchmark script, and demo launch path can run end to end. They do not validate biological mechanisms or intervention effects.

@@ -2,13 +2,17 @@
 
 __all__ = [
     "config",
+    "benchmark",
     "datasets",
     "encoders",
     "evidence_graph",
     "gene_sets",
+    "hdf_adapter",
     "jepa",
+    "planner",
     "toy_data",
     "training",
+    "verifier",
 ]
 
 __version__ = "0.1.0"

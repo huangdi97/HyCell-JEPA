@@ -6,13 +6,13 @@
 - Keep entries factual. Do not present toy-data behavior as biological discovery.
 
 ## Current Status
-Goal 2 verification fix complete. The repository now has valid src-layout Python packaging, YAML local config loading, deterministic toy score preparation, compact Bio-State/Action/Context encoders, a toy JEPA transition core, local training CLIs, expected checkpoint/embedding/report artifacts, and focused tests.
+Goal 3 verification fix complete. The repository now has the toy data/scoring pipeline, compact JEPA model, HDF Adapter, Biological Verifier, Target-State Planner, benchmark CLIs, package-level Streamlit demo, expected local artifacts, and focused tests.
 
 ## Current Milestone
-Milestone 2: compact encoder and JEPA transition smoke model.
+Milestone 3: end-to-end toy MVP loop.
 
 ## Next Action
-Run Goal 3: implement the HDF Adapter, Biological Verifier, Target-State Planner, benchmark script, and Streamlit demo.
+Run Goal 4: real data integration scaffolding with h5ad/csv/npz loaders, schema validation, HDF aging adapter, and perturbation adapter.
 
 ## Entries
 
@@ -320,3 +320,115 @@ Known limitations:
 
 Next recommended step:
 Start Goal 3 using `outputs/checkpoints/best_encoder.pt`, `outputs/checkpoints/best_jepa.pt`, `outputs/embeddings/embeddings.npy`, and `outputs/reports/jepa_metrics.json` as the local compatibility artifacts.
+
+### 2026-07-05 - Goal 3 HDF adapter, verifier, planner, benchmark, and demo
+
+Completed the first end-to-end toy MVP loop on compact gene-set states. The flow maps toy HDF contexts/actions, predicts next compact states with the JEPA core, verifies toy constraints, plans over short action sequences, writes a benchmark report, and launches a Streamlit demo.
+
+Files created:
+- `configs/benchmark_toy.yaml`
+- `configs/demo.yaml`
+- `scripts/benchmark_toy.py`
+- `scripts/demo_app.py`
+- `src/hycell/hdf_adapter.py`
+- `src/hycell/verifier.py`
+- `src/hycell/planner.py`
+- `src/hycell/benchmark.py`
+- `tests/test_hdf_adapter.py`
+- `tests/test_verifier.py`
+- `tests/test_planner.py`
+- `tests/test_benchmark_smoke.py`
+
+Files updated:
+- `src/hycell/__init__.py`
+- `README.md`
+- `docs/model_card.md`
+- `docs/benchmark_report.md`
+- `docs/limitations.md`
+- `docs/progress_log.md`
+
+Generated outputs:
+- `outputs/benchmark_toy/benchmark_report.json`
+
+Commands run:
+
+```bash
+python scripts/make_toy_data.py --config configs/toy_data.yaml
+python scripts/score_gene_sets.py --input outputs/toy_data/toy_cells.csv --config configs/gene_sets.yaml
+python scripts/train_jepa.py --config configs/jepa_toy.yaml
+python scripts/benchmark_toy.py --config configs/benchmark_toy.yaml
+python -m compileall scripts src
+pytest
+streamlit run scripts/demo_app.py
+find . -maxdepth 3 -type f | sort
+git status
+```
+
+Benchmark/demo status:
+- Benchmark transitions: 8
+- Benchmark transition MSE: `0.014585165`
+- Verifier status counts: `{"warn": 8}`
+- Planner sequence for configured target: `regeneration -> control`
+- Planner final distance: `0.183562100`
+- Streamlit demo launched headlessly and returned HTTP 200 before shutdown.
+- Tests: 25 passed
+
+Known limitations:
+- Toy verifier warnings are designed to prevent overinterpretation; they are not biological validation.
+- Planner output is a toy software sequence, not a recommendation or protocol.
+- Streamlit smoke verification checked launch/serve behavior, not full browser interaction.
+- No real-data loader, schema validator, perturbation adapter, or clinical/biological recommendation system has been added.
+
+Next recommended step:
+Run `02_Codex_Goals/Goal 4 - Real Data Integration.md` after preserving the Goal 3 changes.
+
+### 2026-07-05 - Goal 3 CLI and Streamlit compatibility fix
+
+Failure:
+- `pytest` passed, but local verification expected `scripts/eval_benchmark.py`, which did not exist.
+- Local verification expected `scripts/run_planner.py`, which did not exist.
+- Local verification expected `streamlit run src/hycell/demo/app.py`; the package-level demo path did not exist and Streamlit was not declared as a dependency.
+
+Fix:
+- Added `scripts/eval_benchmark.py`, accepting `--checkpoint` and writing `outputs/reports/benchmark_report.md` plus `outputs/reports/benchmark_metrics.json`.
+- Added `scripts/run_planner.py`, accepting `--checkpoint`, `--state`, and `--target`, and writing `outputs/reports/planner_report.md` plus `outputs/reports/top_k_actions.json`.
+- Added `src/hycell/demo/app.py` and `src/hycell/demo/__init__.py` as a package-level Streamlit demo path.
+- Added `streamlit>=1.37` to `pyproject.toml` and `requirements.txt`.
+- Added Top-K planner support and tests for the compatibility CLIs and package demo import.
+
+Files created:
+- `scripts/eval_benchmark.py`
+- `scripts/run_planner.py`
+- `src/hycell/demo/__init__.py`
+- `src/hycell/demo/app.py`
+
+Files updated:
+- `src/hycell/planner.py`
+- `tests/test_benchmark_smoke.py`
+- `pyproject.toml`
+- `requirements.txt`
+- `docs/progress_log.md`
+
+Commands run:
+
+```bash
+pytest
+python scripts/eval_benchmark.py --checkpoint outputs/checkpoints/best_jepa.pt
+python scripts/run_planner.py --checkpoint outputs/checkpoints/best_jepa.pt --state aged_hdf --target rejuvenated_repair
+python -c "import streamlit; print(streamlit.__version__)"
+```
+
+Outputs verified:
+- `outputs/reports/benchmark_report.md`
+- `outputs/reports/benchmark_metrics.json`
+- `outputs/reports/planner_report.md`
+- `outputs/reports/top_k_actions.json`
+
+Known limitations:
+- The benchmark and planner remain toy engineering validation only.
+- Planner Top-K actions are not recommendations, protocols, or biological discovery claims.
+- The package demo depends on Streamlit being installed from project dependencies.
+- No real data integration, dataset download, h5ad loader, perturbation adapter, or clinical/biological recommendation system was added.
+
+Next recommended step:
+After preserving this compatibility fix, proceed to Goal 4 real-data integration scaffolding.
