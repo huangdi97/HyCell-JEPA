@@ -37,3 +37,13 @@ Thumbs.db
 *.egg-info/
 build/
 dist/
+
+# Generated training artifacts
+outputs/
+data/processed/
+*.pt
+*.pth
+*.ckpt
+*.npy
+*.npz
+*.egg-info/

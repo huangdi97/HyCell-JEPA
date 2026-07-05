@@ -3,9 +3,9 @@
 Universal-to-Specific Cellular World Model prototype for HDF aging, regeneration, and partial reprogramming.
 
 ## Current Status
-This repository is currently an early MVP engineering workspace. It now includes a small deterministic toy perturbation pipeline for data generation, gene set scoring, and evidence graph construction. It is not yet a completed biological discovery system, not a clinical tool, and not a full virtual cell model.
+This repository is currently an early MVP engineering workspace. It now includes a small deterministic toy perturbation pipeline for data generation, gene set scoring, evidence graph construction, compact encoders, and a toy JEPA transition core. It is not yet a completed biological discovery system, not a clinical tool, and not a full virtual cell model.
 
-The immediate purpose of this repository is to preserve project context and keep a runnable toy engineering pipeline. Future goals will add model components, benchmarks, a Streamlit demo, and eventually real-data integration.
+The immediate purpose of this repository is to preserve project context and keep a runnable toy engineering pipeline. Future goals will add the HDF adapter, verifier, planner, benchmark script, Streamlit demo, and eventually real-data integration.
 
 ## Core Idea
 
@@ -52,6 +52,8 @@ HyCell-JEPA will model transitions from a current biological belief state, actio
 python scripts/make_toy_data.py --config configs/toy_data.yaml
 python scripts/score_gene_sets.py --input outputs/toy_data/toy_cells.csv --config configs/gene_sets.yaml
 python scripts/build_evidence_graph.py --scores outputs/toy_data/gene_set_scores.csv
+python scripts/train_jepa.py --config configs/jepa_toy.yaml
+python scripts/evaluate_jepa.py --config configs/jepa_toy.yaml
 pytest
 ```
 

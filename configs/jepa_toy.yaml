@@ -1,0 +1,30 @@
+{
+  "seed": 20260705,
+  "scores_path": "outputs/toy_data/gene_set_scores.csv",
+  "output_dir": "outputs/jepa_toy",
+  "model_filename": "toy_jepa_model.npz",
+  "metadata_filename": "toy_jepa_metadata.json",
+  "metrics_filename": "toy_jepa_metrics.json",
+  "belief_features": [
+    "senescence",
+    "proliferation",
+    "ecm_remodeling",
+    "stress_inflammation",
+    "reprogramming_plasticity",
+    "viability_qc_proxy"
+  ],
+  "timepoints": ["t0", "t1", "t2"],
+  "action_labels": [
+    "control",
+    "aging_stress",
+    "regeneration",
+    "partial_reprogramming"
+  ],
+  "context_fields": ["source_timepoint", "target_timepoint", "cell_system"],
+  "bio_state_embedding_dim": 4,
+  "action_embedding_dim": 3,
+  "context_embedding_dim": 3,
+  "adapter_embedding_dim": 2,
+  "ridge_lambda": 0.001,
+  "train_fraction": 0.75
+}

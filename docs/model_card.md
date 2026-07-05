@@ -1,10 +1,16 @@
 # Model Card
 
 ## Model Status
-Placeholder. No neural model has been implemented yet.
+Goal 2 implements the first compact toy JEPA transition model. It is a deterministic NumPy-based engineering model over gene-set readout features, not a full biological model.
 
-## Intended MVP Model
-The planned MVP model includes a Bio-State Encoder, Action Encoder, Context Encoder, JEPA Transition Core, HDF Adapter, Biological Verifier, and Target-State Planner.
+## Implemented Components
+- Bio-State Encoder: standardizes compact gene-set readout features and projects them to a small embedding.
+- Action Encoder: one-hot encodes canonical toy perturbation labels and projects them to a small embedding.
+- Context Encoder: encodes adjacent toy timepoint/cell-system context labels.
+- Adapter placeholder encoder: encodes the toy cell-system label as `h_t`.
+- JEPA Transition Core: ridge-regression linear head predicting next compact belief-state features from encoded `b_t + a_t + c_t + h_t`.
+
+The current model predicts six compact toy readouts: senescence, proliferation, ECM/remodeling, stress/inflammation, reprogramming/plasticity, and viability/QC proxy.
 
 ## Intended Use
 Engineering validation of a cellular world model prototype using toy data first, then carefully validated real data.
@@ -15,5 +21,15 @@ Engineering validation of a cellular world model prototype using toy data first,
 - Full transcriptome generation.
 - Lingshu-Cell-scale modeling.
 
+## Current Toy Evaluation
+Latest Goal 2 smoke run:
+- Training transitions: 6
+- Held-out eval transitions: 2
+- Training MSE: `0.000000375`
+- Held-out eval MSE: `0.058339536`
+- All-transition evaluation MSE: `0.014585165`
+
+These metrics are software smoke-test metrics only. They are not biological validation.
+
 ## Evaluation Plan
-Future benchmark reports should include toy-transition prediction quality, verifier behavior, planner sanity checks, and runtime constraints.
+Future benchmark reports should add verifier behavior, planner sanity checks, demo smoke tests, real-data schema validation, and runtime constraints.
