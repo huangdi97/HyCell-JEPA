@@ -32,3 +32,8 @@ outputs/
 # OS
 .DS_Store
 Thumbs.db
+
+# Python packaging artifacts
+*.egg-info/
+build/
+dist/
