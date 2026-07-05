@@ -1,0 +1,14 @@
+{
+  "output_dir": "outputs/toy_data",
+  "output_filename": "gene_set_scores.csv",
+  "missing_gene_policy": "error",
+  "score_method": "mean_expression",
+  "gene_sets": {
+    "senescence": ["CDKN1A", "CDKN2A"],
+    "proliferation": ["MKI67", "TOP2A"],
+    "ecm_remodeling": ["COL1A1", "FN1"],
+    "stress_inflammation": ["IL6", "CXCL8"],
+    "reprogramming_plasticity": ["POU5F1", "SOX2"],
+    "viability_qc_proxy": ["BCL2", "ACTB"]
+  }
+}

@@ -1,3 +1,18 @@
+Metadata-Version: 2.4
+Name: hycell-jepa
+Version: 0.1.0
+Summary: Toy engineering scaffold for the HyCell-JEPA cellular world model MVP.
+Author: HyCell-JEPA contributors
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: numpy>=1.23
+Provides-Extra: dev
+Requires-Dist: pytest>=7; extra == "dev"
+
 # HyCell-JEPA
 
 Universal-to-Specific Cellular World Model prototype for HDF aging, regeneration, and partial reprogramming.

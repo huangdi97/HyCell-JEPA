@@ -1,0 +1,94 @@
+{
+  "seed": 1729,
+  "output_dir": "outputs/toy_data",
+  "output_filename": "toy_cells.csv",
+  "cells_per_action_timepoint": 6,
+  "noise": 0.08,
+  "timepoints": ["t0", "t1", "t2"],
+  "timepoint_effect_scale": {
+    "t0": 0.0,
+    "t1": 0.55,
+    "t2": 1.0
+  },
+  "context": {
+    "cell_system": "toy_hdf",
+    "culture": "2d_in_vitro_toy",
+    "species": "human_toy",
+    "is_toy": true
+  },
+  "genes": [
+    "CDKN1A",
+    "CDKN2A",
+    "MKI67",
+    "TOP2A",
+    "COL1A1",
+    "FN1",
+    "IL6",
+    "CXCL8",
+    "POU5F1",
+    "SOX2",
+    "BCL2",
+    "ACTB"
+  ],
+  "baseline_expression": {
+    "CDKN1A": 1.2,
+    "CDKN2A": 0.8,
+    "MKI67": 2.0,
+    "TOP2A": 1.8,
+    "COL1A1": 2.6,
+    "FN1": 2.4,
+    "IL6": 0.6,
+    "CXCL8": 0.5,
+    "POU5F1": 0.2,
+    "SOX2": 0.2,
+    "BCL2": 1.4,
+    "ACTB": 3.0
+  },
+  "actions": {
+    "control": {
+      "label": "Control no-op",
+      "description": "Toy untreated HDF-like baseline."
+    },
+    "aging_stress": {
+      "label": "Aging-like stress",
+      "description": "Toy senescence/stress-leaning perturbation."
+    },
+    "regeneration": {
+      "label": "Regeneration-supporting",
+      "description": "Toy remodeling/proliferation-supporting perturbation."
+    },
+    "partial_reprogramming": {
+      "label": "Partial reprogramming-inspired",
+      "description": "Toy plasticity-shifting perturbation."
+    }
+  },
+  "action_effects": {
+    "control": {},
+    "aging_stress": {
+      "CDKN1A": 1.2,
+      "CDKN2A": 1.1,
+      "MKI67": -0.8,
+      "TOP2A": -0.7,
+      "IL6": 1.0,
+      "CXCL8": 0.9,
+      "BCL2": -0.3
+    },
+    "regeneration": {
+      "MKI67": 0.9,
+      "TOP2A": 0.8,
+      "COL1A1": 0.5,
+      "FN1": 0.6,
+      "BCL2": 0.4,
+      "IL6": -0.2
+    },
+    "partial_reprogramming": {
+      "POU5F1": 0.9,
+      "SOX2": 0.8,
+      "CDKN1A": -0.4,
+      "CDKN2A": -0.3,
+      "COL1A1": -0.5,
+      "FN1": -0.4,
+      "MKI67": 0.3
+    }
+  }
+}
