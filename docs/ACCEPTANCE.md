@@ -182,26 +182,32 @@ git status
 Goal 5 is complete only when Goal 4.5 remains valid and all of the following are true:
 
 Required files:
-- `configs/cloud_4090.yaml`
+- `configs/train_cloud_4090.yaml`
 - `scripts/run_cloud_experiment.sh`
 - `scripts/package_results.py`
 - `Makefile`
 - `tests/test_package_results.py`
+- `docs/cloud_4090_guide.md`
+- `scripts/verify_goal5.sh`
 
 Required behavior:
 - Cloud config documents RTX 4090 assumptions, runtime limits, and safe defaults.
 - Cloud scripts do not start remote jobs or download large datasets automatically.
 - Result packaging collects only small configs, logs, metrics, plots, and summaries.
-- Make targets include help, tests, local smoke, cloud smoke, and package results.
+- Make targets include Goal 5 verification, cloud training, and package results.
 - Cloud guide includes setup, cost controls, shutdown, packaging, and download steps.
 - Secrets are never stored in the repo.
 
 Required verification:
 
 ```bash
-python scripts/package_results.py --help
-make help
-make test
+bash scripts/verify_goal5.sh
 find . -maxdepth 3 -type f | sort
 git status
+```
+
+Optional full cloud command:
+
+```bash
+bash scripts/run_cloud_experiment.sh
 ```

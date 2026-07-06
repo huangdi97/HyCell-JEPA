@@ -28,6 +28,7 @@ outputs/
 *.pt
 *.pth
 *.ckpt
+*.zip
 
 # OS
 .DS_Store
@@ -46,4 +47,5 @@ data/processed/
 *.ckpt
 *.npy
 *.npz
+*.zip
 *.egg-info/

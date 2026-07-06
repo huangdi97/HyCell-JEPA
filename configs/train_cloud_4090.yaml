@@ -1,0 +1,60 @@
+seed: 20260706
+
+# Cloud intent metadata. The current compact NumPy trainer consumes the
+# embedding/output fields below, while these fields document the target scale
+# for the cloud smoke workflow and are used by run_cloud_experiment.sh.
+n_cells: 20000
+n_genes: 4000
+latent_dim: 256
+hidden_dim: 512
+batch_size: 512
+epochs: 3
+precision: fp16_if_cuda_available
+target_hardware: rtx_4090_24gb
+cloud_toy_npz_path: outputs/cloud_run/cloud_toy_cells.npz
+
+toy_data_config: configs/toy_data.yaml
+gene_sets_config: configs/gene_sets.yaml
+toy_cells_path: outputs/toy_data/toy_cells.csv
+scores_path: outputs/toy_data/gene_set_scores.csv
+auto_prepare_toy_scores: true
+
+belief_features:
+  - senescence
+  - proliferation
+  - ecm_remodeling
+  - stress_inflammation
+  - reprogramming_plasticity
+  - viability_qc_proxy
+timepoints:
+  - t0
+  - t1
+  - t2
+action_labels:
+  - control
+  - aging_stress
+  - regeneration
+  - partial_reprogramming
+
+# Supported compact-trainer fields.
+bio_state_embedding_dim: 4
+action_embedding_dim: 3
+context_embedding_dim: 3
+adapter_embedding_dim: 2
+ridge_lambda: 0.001
+train_fraction: 0.75
+
+output_dir: outputs/jepa_toy
+checkpoint_dir: outputs/checkpoints
+embeddings_dir: outputs/embeddings
+reports_dir: outputs/reports
+
+encoder_checkpoint: outputs/checkpoints/best_encoder.pt
+jepa_checkpoint: outputs/checkpoints/best_jepa.pt
+embeddings_path: outputs/embeddings/embeddings.npy
+metrics_path: outputs/reports/metrics.json
+jepa_metrics_path: outputs/reports/jepa_metrics.json
+
+model_filename: toy_jepa_model.npz
+metadata_filename: toy_jepa_metadata.json
+metrics_filename: toy_jepa_metrics.json

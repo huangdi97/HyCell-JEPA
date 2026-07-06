@@ -6,13 +6,13 @@
 - Keep entries factual. Do not present toy-data behavior as biological discovery.
 
 ## Current Status
-Makefile workflow targets added. The repository now has the toy pipeline, compact JEPA model, HDF Adapter, verifier, planner, benchmark/demo CLIs, acceptance hardening, Goal 4 real-data loaders/schema/adapters, Goal 4 acceptance script, local real-data smoke inspect/preprocess workflow, and Make targets for common verification/training/demo commands.
+Goal 5 cloud RTX 4090 workflow scaffolding complete. The repository now has the toy pipeline, compact JEPA model, HDF Adapter, verifier, planner, benchmark/demo CLIs, acceptance hardening, Goal 4 real-data loaders/schema/adapters, Goal 4.5 smoke workflow, Make targets, cloud-safe training config, cloud run script, result packager, and Goal 5 verifier.
 
 ## Current Milestone
-Milestone 4.5: local real-data smoke testing and workflow ergonomics.
+Milestone 5: cloud RTX 4090 workflow scaffolding.
 
 ## Next Action
-Preserve the Makefile workflow targets, then run Goal 5: cloud RTX 4090 training workflow scaffolding.
+Preserve the Goal 5 workflow scaffolding, then run the next maintenance or experiment goal.
 
 ## Entries
 
@@ -651,3 +651,51 @@ Known limitations:
 
 Next recommended step:
 Preserve these workflow targets, then proceed to `02_Codex_Goals/Goal 5 - Cloud 4090 Training.md`.
+
+### 2026-07-06 - Goal 5 cloud RTX 4090 workflow
+
+Added a reproducible cloud RTX 4090 smoke workflow for the current toy/fixture-based HyCell-JEPA MVP. The workflow records environment information, generates a cloud-sized toy NPZ smoke matrix, runs the existing compact toy encoder/JEPA/benchmark/planner CLIs, and packages small result artifacts without including raw data or checkpoints.
+
+Files created:
+- `configs/train_cloud_4090.yaml`
+- `scripts/run_cloud_experiment.sh`
+- `scripts/package_results.py`
+- `scripts/verify_goal5.sh`
+- `tests/test_package_results.py`
+
+Files updated:
+- `.gitignore`
+- `Makefile`
+- `docs/ACCEPTANCE.md`
+- `docs/cloud_4090_guide.md`
+- `docs/progress_log.md`
+
+Commands run:
+
+```bash
+pytest tests/test_package_results.py
+python scripts/package_results.py --help
+make -n verify-goal5
+make -n train-cloud
+make -n package-results
+bash scripts/verify_goal5.sh
+pytest
+bash scripts/verify_goal1.sh
+bash scripts/verify_goal2.sh
+bash scripts/verify_goal3.sh
+bash scripts/verify_goal4.sh
+bash scripts/verify_goal4_real_smoke.sh
+bash scripts/verify_goal5.sh
+find . -maxdepth 3 -type f | sort
+git status
+```
+
+Known limitations:
+- The current compact NumPy trainer does not consume cloud-intent fields such as `hidden_dim`, `batch_size`, `epochs`, or fp16 precision; these are documented in `configs/train_cloud_4090.yaml` and `docs/cloud_4090_guide.md`.
+- `scripts/run_cloud_experiment.sh` generates a larger toy NPZ smoke matrix for cloud workflow readiness, while the compact trainer still trains on toy gene-set scores.
+- No real datasets are downloaded or packaged.
+- Packaged results intentionally exclude raw data, checkpoints, `.pt`, `.ckpt`, `.npy`, `.npz`, `.h5ad`, and data directories.
+- No real biological validation or Lingshu-Cell-scale diffusion was implemented.
+
+Next recommended step:
+Preserve the Goal 5 workflow scaffolding, then decide whether to run a real cloud smoke experiment or add further maintenance goals.
