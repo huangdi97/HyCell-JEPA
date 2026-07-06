@@ -6,13 +6,13 @@
 - Keep entries factual. Do not present toy-data behavior as biological discovery.
 
 ## Current Status
-Goal 4.5 real-data smoke workflow complete. The repository now has the toy pipeline, compact JEPA model, HDF Adapter, verifier, planner, benchmark/demo CLIs, acceptance hardening, Goal 4 real-data loaders/schema/adapters, Goal 4 acceptance script, and a local real-data smoke inspect/preprocess workflow.
+Makefile workflow targets added. The repository now has the toy pipeline, compact JEPA model, HDF Adapter, verifier, planner, benchmark/demo CLIs, acceptance hardening, Goal 4 real-data loaders/schema/adapters, Goal 4 acceptance script, local real-data smoke inspect/preprocess workflow, and Make targets for common verification/training/demo commands.
 
 ## Current Milestone
-Milestone 4.5: local real-data smoke testing.
+Milestone 4.5: local real-data smoke testing and workflow ergonomics.
 
 ## Next Action
-Preserve the Goal 4.5 smoke workflow, then run Goal 5: cloud RTX 4090 training workflow scaffolding.
+Preserve the Makefile workflow targets, then run Goal 5: cloud RTX 4090 training workflow scaffolding.
 
 ## Entries
 
@@ -609,3 +609,45 @@ Known limitations:
 
 Next recommended step:
 Preserve the Goal 4.5 workflow, then proceed to `02_Codex_Goals/Goal 5 - Cloud 4090 Training.md`.
+
+### 2026-07-06 - Makefile workflow targets
+
+Added Makefile wrappers for the local acceptance and workflow commands so common checks can be run without remembering each script path.
+
+Files created:
+- `Makefile`
+
+Targets added:
+- `make verify`
+- `make verify-goal1`
+- `make verify-goal2`
+- `make verify-goal3`
+- `make verify-goal4`
+- `make verify-real-smoke`
+- `make train-local`
+- `make demo`
+
+Commands run:
+
+```bash
+make -n verify
+make -n verify-goal1
+make -n verify-goal2
+make -n verify-goal3
+make -n verify-goal4
+make -n verify-real-smoke
+make -n train-local
+make -n demo
+make verify
+make train-local
+find . -maxdepth 3 -type f | sort
+git status
+```
+
+Known limitations:
+- `make demo` launches Streamlit and is intentionally interactive/long-running.
+- The verifier targets still use Bash; in the Codex sandbox, Bash may require outside-sandbox execution because WSL Bash can fail with `E_ACCESSDENIED`.
+- Generated outputs remain ignored and should not be committed.
+
+Next recommended step:
+Preserve these workflow targets, then proceed to `02_Codex_Goals/Goal 5 - Cloud 4090 Training.md`.
