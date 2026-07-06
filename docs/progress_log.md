@@ -6,13 +6,13 @@
 - Keep entries factual. Do not present toy-data behavior as biological discovery.
 
 ## Current Status
-Goal 5 cloud RTX 4090 workflow scaffolding complete. The repository now has the toy pipeline, compact JEPA model, HDF Adapter, verifier, planner, benchmark/demo CLIs, acceptance hardening, Goal 4 real-data loaders/schema/adapters, Goal 4.5 smoke workflow, Make targets, cloud-safe training config, cloud run script, result packager, and Goal 5 verifier.
+Goal 6 GSE130973 real-data smoke integration is complete. The repository has the toy pipeline, compact JEPA model, HDF Adapter, verifier, planner, benchmark/demo CLIs, acceptance hardening, Goal 4 real-data loaders/schema/adapters, Goal 4.5 smoke workflow, Make targets, cloud workflow scaffolding, and a verified GSE130973 Matrix Market ingestion smoke path.
 
 ## Current Milestone
-Milestone 5: cloud RTX 4090 workflow scaffolding.
+Milestone 6: first real public skin aging single-cell smoke dataset integration.
 
 ## Next Action
-Preserve the Goal 5 workflow scaffolding, then run the next maintenance or experiment goal.
+Preserve Goal 6, then decide whether to add richer metadata support for GSE130973 or integrate the next real-data candidate.
 
 ## Entries
 
@@ -699,3 +699,96 @@ Known limitations:
 
 Next recommended step:
 Preserve the Goal 5 workflow scaffolding, then decide whether to run a real cloud smoke experiment or add further maintenance goals.
+
+### 2026-07-06 - Goal 6 GSE130973 real-data smoke integration
+
+Added the first dataset-specific real-data smoke workflow for GSE130973 processed GEO files. The workflow inspects local raw files, reads Matrix Market expression data, handles genes x cells versus cells x genes orientation, creates a deterministic capped cells x genes NPZ artifact, and keeps unavailable age/state metadata explicit as `unknown`.
+
+Files created:
+- `configs/gse130973_smoke.yaml`
+- `scripts/inspect_gse130973.py`
+- `scripts/prepare_gse130973.py`
+- `scripts/verify_goal6.sh`
+- `src/hycell/real_datasets.py`
+- `tests/test_gse130973_loader.py`
+- `docs/datasets_registry.md`
+- `docs/gse130973_integration.md`
+
+Files updated:
+- `AGENTS.md`
+- `Makefile`
+- `docs/ACCEPTANCE.md`
+- `docs/progress_log.md`
+- `src/hycell/__init__.py`
+- `tests/test_cli_contracts.py`
+
+Commands run:
+
+```bash
+pytest tests/test_gse130973_loader.py
+pytest tests/test_cli_contracts.py
+pytest
+python scripts/inspect_gse130973.py --raw-dir outputs/test_tmp/gse130973_cli_fixture/gse130973
+python scripts/validate_dataset.py --input outputs/test_tmp/gse130973_cli_fixture/prepared.npz --output outputs/test_tmp/gse130973_cli_fixture/validation.json
+python scripts/inspect_gse130973.py --raw-dir data/raw/gse130973
+python scripts/prepare_gse130973.py --raw-dir data/raw/gse130973 --out data/processed/gse130973/gse130973_smoke.npz --max-cells 5000 --max-genes 2000
+python scripts/validate_dataset.py --input data/processed/gse130973/gse130973_smoke.npz
+bash scripts/verify_goal1.sh
+bash scripts/verify_goal2.sh
+bash scripts/verify_goal3.sh
+bash scripts/verify_goal4.sh
+bash scripts/verify_goal4_real_smoke.sh
+bash scripts/verify_goal5.sh
+bash scripts/verify_goal6.sh
+find . -maxdepth 3 -type f | sort
+git status --short
+git status
+```
+
+Known limitations:
+- The real GSE130973 raw files are not downloaded by this repository or tests.
+- The three expected filtered files do not include donor age or sample metadata, so prepared smoke artifacts set age and state labels to `unknown`.
+- The prepared NPZ is an ingestion and validation artifact only, not biological validation.
+- Duplicate gene symbols are disambiguated with deterministic suffixes such as `__dup2` so schema validation can require unique gene identifiers.
+- No fibroblast-only filtering is claimed from the three Matrix Market inputs.
+- Real raw and processed files remain ignored and must not be committed.
+
+Next recommended step:
+After preserving Goal 6, add optional reliable sample metadata parsing for GSE130973 if a matching metadata source is provided, or proceed to the next candidate dataset in `docs/datasets_registry.md`.
+
+### 2026-07-06 - Goal 6 GSE130973 schema warning fix
+
+Fixed the validation warning for the truthful unfiltered skin single-cell label used by the GSE130973 smoke artifact.
+
+Files updated:
+- `configs/real_data_schema.yaml`
+- `docs/real_data_integration.md`
+- `docs/gse130973_integration.md`
+- `docs/progress_log.md`
+- `tests/test_schema.py`
+
+Commands run:
+
+```bash
+pytest tests/test_schema.py
+python scripts/validate_dataset.py --input data/processed/gse130973/gse130973_smoke.npz
+pytest
+bash scripts/verify_goal6.sh
+bash scripts/verify_goal1.sh
+bash scripts/verify_goal2.sh
+bash scripts/verify_goal3.sh
+bash scripts/verify_goal4.sh
+bash scripts/verify_goal4_real_smoke.sh
+bash scripts/verify_goal5.sh
+git status
+```
+
+Known limitations:
+- `skin_single_cell_unfiltered` is allowed because it is a truthful dataset-level smoke label, not an HDF-only label.
+- GSE130973 smoke output remains unfiltered human skin single-cell data.
+- Downstream HDF filtering still requires reliable metadata or cell-type annotation.
+- Age labels remain `unknown` from the three GEO matrix files alone.
+- No raw data or processed NPZ files are committed.
+
+Next recommended step:
+Preserve this warning fix with Goal 6, then add metadata-aware filtering only if a reliable annotation source is provided.

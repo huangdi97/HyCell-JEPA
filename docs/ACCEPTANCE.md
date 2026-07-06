@@ -211,3 +211,42 @@ Optional full cloud command:
 ```bash
 bash scripts/run_cloud_experiment.sh
 ```
+
+## Goal 6 Contract - GSE130973 Real Dataset Smoke Integration
+
+Goal 6 is complete only when Goal 5 remains valid and all of the following are true:
+
+Required files:
+- `configs/gse130973_smoke.yaml`
+- `scripts/inspect_gse130973.py`
+- `scripts/prepare_gse130973.py`
+- `scripts/verify_goal6.sh`
+- `src/hycell/real_datasets.py`
+- `tests/test_gse130973_loader.py`
+- `docs/datasets_registry.md`
+- `docs/gse130973_integration.md`
+
+Required behavior:
+- The GSE130973 loader reads local processed GEO Matrix Market files: matrix, genes, and barcodes.
+- Final prepared expression orientation is cells x genes.
+- Subsampling by `max_cells` and `max_genes` is deterministic with a fixed seed.
+- The prepared NPZ contains expression, gene names, cell IDs, dataset/source metadata, real-data flag, note, and unknown state labels when age/sample metadata is unavailable.
+- The workflow does not download data and does not invent donor age labels.
+- The workflow does not claim fibroblast-only filtering or biological discovery from smoke artifacts.
+- Fixture tests cover Matrix Market loading, orientation handling, and NPZ writing without requiring the real dataset.
+- If local raw files are present, the verifier inspects, prepares, and validates the smoke NPZ; otherwise it prints a clear skip message and still passes fixture tests.
+
+Required verification:
+
+```bash
+bash scripts/verify_goal6.sh
+pytest
+bash scripts/verify_goal1.sh
+bash scripts/verify_goal2.sh
+bash scripts/verify_goal3.sh
+bash scripts/verify_goal4.sh
+bash scripts/verify_goal4_real_smoke.sh
+bash scripts/verify_goal5.sh
+find . -maxdepth 3 -type f | sort
+git status
+```

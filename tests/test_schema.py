@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import numpy as np
 
+from hycell.config import load_config
 from hycell.data_loaders import SingleCellDataset
 from hycell.schema import AnnDataSchemaValidator
 
@@ -47,6 +48,36 @@ def test_schema_validator_reports_actionable_errors() -> None:
     assert any("empty perturbation labels" in message for message in messages)
     assert any("ambiguous perturbation labels" in message for message in messages)
     assert result.warnings[0].field == "cell_system"
+
+
+def test_project_schema_allows_unfiltered_skin_single_cell_label() -> None:
+    dataset = SingleCellDataset(
+        expression=np.asarray([[1.0], [2.0]]),
+        obs=[
+            {
+                "cell_id": "skin_c1",
+                "perturbation": "observational_unlabeled",
+                "timepoint": "not_available",
+                "cell_system": "skin_single_cell_unfiltered",
+            },
+            {
+                "cell_id": "skin_c2",
+                "perturbation": "observational_unlabeled",
+                "timepoint": "not_available",
+                "cell_system": "skin_single_cell_unfiltered",
+            },
+        ],
+        var_names=["GENE_A"],
+        source_path="memory",
+        file_format="test",
+    )
+    validator = AnnDataSchemaValidator(load_config("configs/real_data_schema.yaml"))
+
+    result = validator.validate(dataset)
+
+    assert result.valid is True
+    assert result.errors == []
+    assert not any(issue.field == "cell_system" for issue in result.warnings)
 
 
 def _schema_config() -> dict:

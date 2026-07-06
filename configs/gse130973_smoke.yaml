@@ -1,0 +1,6 @@
+dataset_id: gse130973
+raw_dir: data/raw/gse130973
+processed_out: data/processed/gse130973/gse130973_smoke.npz
+max_cells: 5000
+max_genes: 2000
+seed: 20260706

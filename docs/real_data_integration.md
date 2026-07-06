@@ -25,6 +25,12 @@ python scripts/validate_dataset.py --input path/to/dataset.csv --schema configs/
 - HDF context mapping through `HDFAgingMetadataAdapter`.
 - Explicit errors for missing required fields, empty perturbations, shape mismatches, duplicate IDs, duplicate gene names, and ambiguous perturbation labels.
 - Explicit warnings for unexpected cell-system values.
+- Allowed cell-system values include HDF labels for HDF-specific fixtures and unfiltered human skin single-cell labels for dataset-level smoke artifacts such as GSE130973.
+
+## GSE130973 Skin Smoke Label
+GSE130973 smoke output uses `cell_system = skin_single_cell_unfiltered`. This is intentional: the three processed GEO matrix files provide expression values, genes, and barcodes, but they do not provide enough metadata to claim HDF-only or fibroblast-only filtering.
+
+The smoke artifact should be treated as unfiltered human skin single-cell data. Downstream HDF-specific filtering requires reliable metadata or cell-type annotation before any cell can be labeled as HDF or fibroblast. Age labels also remain `unknown` from the three GEO matrix files alone.
 
 ## HDF Aging Adapter
 `HDFAgingMetadataAdapter` maps validated metadata into:

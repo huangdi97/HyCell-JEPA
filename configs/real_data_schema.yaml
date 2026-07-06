@@ -12,6 +12,9 @@ allowed_cell_systems:
   - hdf
   - human_dermal_fibroblast
   - toy_hdf
+  - skin_single_cell_unfiltered
+  - human_skin_single_cell
+  - human_skin_single_cell_unfiltered
 canonical_actions:
   control:
     - control

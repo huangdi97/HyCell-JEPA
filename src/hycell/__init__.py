@@ -12,6 +12,7 @@ __all__ = [
     "jepa",
     "perturbation_adapter",
     "planner",
+    "real_datasets",
     "schema",
     "toy_data",
     "training",

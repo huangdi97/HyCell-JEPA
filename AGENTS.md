@@ -46,6 +46,9 @@ Where `b_t` is the biological belief state, `a_t` is an intervention/action, `c_
 - Missing dependencies should be declared in project metadata and should fail with clear messages.
 - Tests can pass while CLI commands fail; always run documented CLIs and verifier scripts for the active goal.
 - Generated artifacts, checkpoints, caches, and data outputs must stay ignored and must not be committed.
+- Real data files under `data/raw/`, processed real-data artifacts under `data/processed/`, `.npz`, `.h5ad`, and checkpoints must never be committed.
+- Real-data integrations must use small deterministic fixture tests that do not download data.
+- Smoke workflows over real datasets prove ingestion/validation plumbing only; they must not be described as biological discovery, rejuvenation evidence, or clinical support.
 - If a final command fails, do not mark the goal complete until the same command or a justified equivalent verification passes.
 
 ## Documentation Requirements

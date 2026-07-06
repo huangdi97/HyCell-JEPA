@@ -27,6 +27,14 @@ COMPLETED_GOAL_CLI_FILES = {
         "scripts/inspect_dataset.py",
         "scripts/preprocess_data.py",
     ],
+    "goal5": [
+        "scripts/package_results.py",
+        "scripts/run_cloud_experiment.sh",
+    ],
+    "goal6": [
+        "scripts/inspect_gse130973.py",
+        "scripts/prepare_gse130973.py",
+    ],
 }
 
 
@@ -41,7 +49,15 @@ def test_completed_goal_cli_files_exist() -> None:
 
 
 def test_acceptance_verifier_scripts_exist_and_use_strict_bash() -> None:
-    for script_name in ("verify_goal1.sh", "verify_goal2.sh", "verify_goal3.sh", "verify_goal4.sh"):
+    for script_name in (
+        "verify_goal1.sh",
+        "verify_goal2.sh",
+        "verify_goal3.sh",
+        "verify_goal4.sh",
+        "verify_goal4_real_smoke.sh",
+        "verify_goal5.sh",
+        "verify_goal6.sh",
+    ):
         path = ROOT / "scripts" / script_name
         assert path.is_file()
         text = path.read_text(encoding="utf-8")
@@ -60,3 +76,18 @@ def test_validate_dataset_help_runs() -> None:
     )
 
     assert "--input INPUT" in result.stdout
+
+
+def test_gse130973_cli_help_runs() -> None:
+    import subprocess
+    import sys
+
+    for script in ("scripts/inspect_gse130973.py", "scripts/prepare_gse130973.py"):
+        result = subprocess.run(
+            [sys.executable, script, "--help"],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+
+        assert "--raw-dir RAW_DIR" in result.stdout
