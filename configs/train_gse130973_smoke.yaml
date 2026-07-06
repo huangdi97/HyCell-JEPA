@@ -1,0 +1,10 @@
+input: data/processed/gse130973/gse130973_smoke.npz
+dataset_id: gse130973
+output_dir: outputs/gse130973_smoke
+reports_dir: outputs/reports
+max_cells: 5000
+max_genes: 2000
+latent_dim: 64
+batch_size: 256
+epochs: 1
+seed: 20260706

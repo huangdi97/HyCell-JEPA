@@ -13,6 +13,7 @@ __all__ = [
     "perturbation_adapter",
     "planner",
     "real_datasets",
+    "real_training",
     "schema",
     "toy_data",
     "training",

@@ -6,13 +6,13 @@
 - Keep entries factual. Do not present toy-data behavior as biological discovery.
 
 ## Current Status
-Goal 6 GSE130973 real-data smoke integration is complete. The repository has the toy pipeline, compact JEPA model, HDF Adapter, verifier, planner, benchmark/demo CLIs, acceptance hardening, Goal 4 real-data loaders/schema/adapters, Goal 4.5 smoke workflow, Make targets, cloud workflow scaffolding, and a verified GSE130973 Matrix Market ingestion smoke path.
+Goal 7 GSE130973 real-data training smoke is complete. The repository has the toy pipeline, compact JEPA model, HDF Adapter, verifier, planner, benchmark/demo CLIs, acceptance hardening, Goal 4 real-data loaders/schema/adapters, Goal 4.5 smoke workflow, cloud workflow scaffolding, a verified GSE130973 ingestion path, and a verified lightweight real-matrix training smoke path.
 
 ## Current Milestone
-Milestone 6: first real public skin aging single-cell smoke dataset integration.
+Milestone 7: real-matrix encoder smoke on the GSE130973 processed subset.
 
 ## Next Action
-Preserve Goal 6, then decide whether to add richer metadata support for GSE130973 or integrate the next real-data candidate.
+Preserve Goal 7, then add metadata-aware filtering only after reliable sample metadata or cell-type annotations are available.
 
 ## Entries
 
@@ -792,3 +792,53 @@ Known limitations:
 
 Next recommended step:
 Preserve this warning fix with Goal 6, then add metadata-aware filtering only if a reliable annotation source is provided.
+
+### 2026-07-06 - Goal 7 GSE130973 real-data training smoke
+
+Added a lightweight real-matrix training smoke workflow for the processed GSE130973 subset. The workflow loads the Goal 6 NPZ, validates required keys, computes descriptive matrix summaries, runs a deterministic encoder-style projection over expression values, and writes small generated artifacts under ignored output paths.
+
+Files created:
+- `configs/train_gse130973_smoke.yaml`
+- `scripts/train_real_smoke.py`
+- `scripts/eval_real_smoke.py`
+- `scripts/verify_goal7.sh`
+- `src/hycell/real_training.py`
+- `tests/test_real_training_smoke.py`
+- `docs/gse130973_smoke_report.md`
+
+Files updated:
+- `Makefile`
+- `docs/ACCEPTANCE.md`
+- `docs/progress_log.md`
+- `src/hycell/__init__.py`
+- `tests/test_cli_contracts.py`
+
+Commands run:
+
+```bash
+pytest tests/test_real_training_smoke.py
+pytest tests/test_cli_contracts.py
+python scripts/eval_real_smoke.py --input data/processed/gse130973/gse130973_smoke.npz
+python scripts/train_real_smoke.py --config configs/train_gse130973_smoke.yaml
+pytest
+bash scripts/verify_goal1.sh
+bash scripts/verify_goal2.sh
+bash scripts/verify_goal3.sh
+bash scripts/verify_goal4.sh
+bash scripts/verify_goal4_real_smoke.sh
+bash scripts/verify_goal5.sh
+bash scripts/verify_goal6.sh
+bash scripts/verify_goal7.sh
+find . -maxdepth 3 -type f | sort
+git status
+```
+
+Known limitations:
+- This is an encoder-style engineering smoke over an unfiltered real skin single-cell matrix.
+- No perturbation transitions are trained because labels are observational or unknown.
+- No planner is trained on unknown labels.
+- No age labels, fibroblast labels, HDF-only labels, rejuvenation signal, or biological-discovery claim is inferred.
+- Real raw data, processed NPZ files, embeddings, metrics, and reports remain ignored generated artifacts.
+
+Next recommended step:
+Add reliable metadata or cell-type annotations before attempting an HDF/fibroblast-specific subset or any biologically meaningful real-data modeling.

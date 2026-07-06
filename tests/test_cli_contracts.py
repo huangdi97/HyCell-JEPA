@@ -35,6 +35,10 @@ COMPLETED_GOAL_CLI_FILES = {
         "scripts/inspect_gse130973.py",
         "scripts/prepare_gse130973.py",
     ],
+    "goal7": [
+        "scripts/eval_real_smoke.py",
+        "scripts/train_real_smoke.py",
+    ],
 }
 
 
@@ -57,6 +61,7 @@ def test_acceptance_verifier_scripts_exist_and_use_strict_bash() -> None:
         "verify_goal4_real_smoke.sh",
         "verify_goal5.sh",
         "verify_goal6.sh",
+        "verify_goal7.sh",
     ):
         path = ROOT / "scripts" / script_name
         assert path.is_file()
@@ -91,3 +96,24 @@ def test_gse130973_cli_help_runs() -> None:
         )
 
         assert "--raw-dir RAW_DIR" in result.stdout
+
+
+def test_real_smoke_cli_help_runs() -> None:
+    import subprocess
+    import sys
+
+    train = subprocess.run(
+        [sys.executable, "scripts/train_real_smoke.py", "--help"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    evaluate = subprocess.run(
+        [sys.executable, "scripts/eval_real_smoke.py", "--help"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    assert "--config CONFIG" in train.stdout
+    assert "--input INPUT" in evaluate.stdout

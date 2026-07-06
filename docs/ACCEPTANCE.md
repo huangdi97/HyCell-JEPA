@@ -206,6 +206,45 @@ find . -maxdepth 3 -type f | sort
 git status
 ```
 
+## Goal 7 Contract - GSE130973 Real-Data Training Smoke
+
+Goal 7 is complete only when Goal 6 remains valid and all of the following are true:
+
+Required files:
+- `configs/train_gse130973_smoke.yaml`
+- `scripts/train_real_smoke.py`
+- `scripts/eval_real_smoke.py`
+- `scripts/verify_goal7.sh`
+- `src/hycell/real_training.py`
+- `tests/test_real_training_smoke.py`
+- `docs/gse130973_smoke_report.md`
+
+Required behavior:
+- The training smoke loads the processed GSE130973 NPZ and verifies required keys before training.
+- Missing processed NPZ inputs fail with a clear message telling the user to run `scripts/prepare_gse130973.py` first.
+- The training smoke writes `outputs/gse130973_smoke/real_smoke_metrics.json`, `outputs/gse130973_smoke/real_smoke_embeddings.npy`, and `outputs/reports/gse130973_real_smoke_report.md`.
+- The evaluation smoke writes `outputs/reports/gse130973_real_matrix_summary.json` and `outputs/reports/gse130973_real_matrix_summary.md`.
+- The workflow remains lightweight, deterministic, and safe for local hardware.
+- The workflow does not invent perturbation transitions, age labels, fibroblast labels, HDF-only claims, rejuvenation claims, or biological-discovery claims.
+- Fixture tests cover loading, output creation, matrix evaluation, and missing-input errors without requiring the real dataset.
+- If the processed NPZ exists locally, the verifier runs real evaluation and real training smoke; otherwise it prints the exact preparation command and still passes fixture tests.
+
+Required verification:
+
+```bash
+pytest
+bash scripts/verify_goal1.sh
+bash scripts/verify_goal2.sh
+bash scripts/verify_goal3.sh
+bash scripts/verify_goal4.sh
+bash scripts/verify_goal4_real_smoke.sh
+bash scripts/verify_goal5.sh
+bash scripts/verify_goal6.sh
+bash scripts/verify_goal7.sh
+find . -maxdepth 3 -type f | sort
+git status
+```
+
 Optional full cloud command:
 
 ```bash
