@@ -1,0 +1,33 @@
+required_obs_fields:
+  - cell_id
+  - perturbation
+  - timepoint
+  - cell_system
+min_cells: 1
+min_genes: 1
+require_unique_cell_ids: true
+require_unique_var_names: true
+disallow_empty_perturbation: true
+allowed_cell_systems:
+  - hdf
+  - human_dermal_fibroblast
+  - toy_hdf
+canonical_actions:
+  control:
+    - control
+    - untreated
+    - vehicle
+    - dmso
+  aging_stress:
+    - aging_stress
+    - senescence
+    - stress
+    - aged
+  regeneration:
+    - regeneration
+    - repair
+    - pro_regeneration
+  partial_reprogramming:
+    - partial_reprogramming
+    - oskm_partial
+    - reprogramming

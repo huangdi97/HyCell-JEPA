@@ -6,13 +6,13 @@
 - Keep entries factual. Do not present toy-data behavior as biological discovery.
 
 ## Current Status
-Goal 3 verification fix complete. The repository now has the toy data/scoring pipeline, compact JEPA model, HDF Adapter, Biological Verifier, Target-State Planner, benchmark CLIs, package-level Streamlit demo, expected local artifacts, and focused tests.
+Goal 4.5 real-data smoke workflow complete. The repository now has the toy pipeline, compact JEPA model, HDF Adapter, verifier, planner, benchmark/demo CLIs, acceptance hardening, Goal 4 real-data loaders/schema/adapters, Goal 4 acceptance script, and a local real-data smoke inspect/preprocess workflow.
 
 ## Current Milestone
-Milestone 3: end-to-end toy MVP loop.
+Milestone 4.5: local real-data smoke testing.
 
 ## Next Action
-Run Goal 4: real data integration scaffolding with h5ad/csv/npz loaders, schema validation, HDF aging adapter, and perturbation adapter.
+Preserve the Goal 4.5 smoke workflow, then run Goal 5: cloud RTX 4090 training workflow scaffolding.
 
 ## Entries
 
@@ -432,3 +432,180 @@ Known limitations:
 
 Next recommended step:
 After preserving this compatibility fix, proceed to Goal 4 real-data integration scaffolding.
+
+### 2026-07-06 - Pre-Goal 4 acceptance hardening
+
+Hardened the Codex workflow so future goals have explicit acceptance contracts and runnable verifier scripts, reducing the risk of marking work complete while required CLI commands still fail.
+
+Files created:
+- `docs/ACCEPTANCE.md`
+- `scripts/verify_goal1.sh`
+- `scripts/verify_goal2.sh`
+- `scripts/verify_goal3.sh`
+- `tests/test_cli_contracts.py`
+
+Files updated:
+- `AGENTS.md`
+- `docs/progress_log.md`
+
+Files removed from the uncommitted worktree:
+- `configs/real_data_schema.yaml`
+- `scripts/validate_dataset.py`
+- `src/hycell/data_loaders.py`
+- `src/hycell/schema.py`
+- `src/hycell/perturbation_adapter.py`
+- `tests/test_data_loaders.py`
+- `tests/test_schema.py`
+- `tests/test_perturbation_adapter.py`
+
+Commands run:
+
+```bash
+pytest
+bash scripts/verify_goal1.sh
+bash scripts/verify_goal2.sh
+bash scripts/verify_goal3.sh
+find . -maxdepth 3 -type f | sort
+git status
+```
+
+Observed results:
+- Full test suite: 30 passed.
+- Goal 1 verifier: passed after adding Bash-side Python fallback for WSL/Git Bash/Windows environments.
+- Goal 2 verifier: passed.
+- Goal 3 verifier: passed.
+- Final file listing and git status commands ran successfully.
+
+Known limitations:
+- The verifier scripts are local smoke/contract checks; they do not make toy outputs biological evidence.
+- In the Codex sandbox, `bash` may fail with WSL `E_ACCESSDENIED`; rerunning the same verifier commands outside the sandbox was required.
+- Goal 4 real-data integration was intentionally not implemented in this hardening step.
+
+Next recommended step:
+Preserve these hardening changes, then run `02_Codex_Goals/Goal 4 - Real Data Integration.md`.
+
+### 2026-07-06 - Goal 4 real-data integration scaffolding
+
+Added real-data integration scaffolding for candidate single-cell perturbation datasets. This work adds loader interfaces, schema validation, perturbation mapping, and HDF aging metadata mapping without downloading or committing any real dataset.
+
+Files created:
+- `configs/real_data_schema.yaml`
+- `scripts/validate_dataset.py`
+- `src/hycell/data_loaders.py`
+- `src/hycell/schema.py`
+- `src/hycell/perturbation_adapter.py`
+- `tests/test_data_loaders.py`
+- `tests/test_schema.py`
+- `tests/test_perturbation_adapter.py`
+
+Files updated:
+- `src/hycell/__init__.py`
+- `tests/test_cli_contracts.py`
+- `docs/data_card.md`
+- `docs/real_data_integration.md`
+- `docs/progress_log.md`
+
+Commands run:
+
+```bash
+python scripts/validate_dataset.py --help
+pytest tests/test_data_loaders.py tests/test_schema.py tests/test_perturbation_adapter.py
+pytest tests/test_data_loaders.py tests/test_schema.py tests/test_perturbation_adapter.py tests/test_cli_contracts.py
+pytest
+find . -maxdepth 3 -type f | sort
+git status
+```
+
+Known limitations:
+- No real datasets are included or downloaded.
+- `.h5ad` support requires optional `anndata`; without it, the loader raises a clear dependency message.
+- Validation checks file shape and metadata fields only; it does not validate biological quality.
+- Perturbation aliases are an initial scaffold and must be reviewed before use on a real dataset.
+- HDF aging metadata mapping creates MVP context labels; it does not perform biological interpretation.
+
+Next recommended step:
+Run `02_Codex_Goals/Goal 5 - Cloud 4090 Training.md` after preserving the Goal 4 scaffolding.
+
+### 2026-07-06 - Goal 4 acceptance script repair
+
+Failure:
+- Local Goal 4 acceptance failed because `bash scripts/verify_goal4.sh` did not exist, even though `scripts/validate_dataset.py` and the real-data scaffolding files were present.
+
+Fix:
+- Added executable `scripts/verify_goal4.sh` with `set -euo pipefail`.
+- The verifier checks Goal 4 files, imports `hycell`, config helpers, loader/schema/adapter modules, runs the full test suite, verifies the toy NPZ generation path, checks `scripts/validate_dataset.py --help`, and validates a tiny generated CSV.
+- Updated `docs/ACCEPTANCE.md` so Goal 4 acceptance uses `bash scripts/verify_goal4.sh`.
+- Updated `AGENTS.md` to say every completed goal should have a matching `scripts/verify_goal*.sh` contract script.
+- Updated `tests/test_cli_contracts.py` to require `verify_goal4.sh` and to smoke-test `validate_dataset.py --help`.
+
+Files created:
+- `scripts/verify_goal4.sh`
+
+Files updated:
+- `AGENTS.md`
+- `docs/ACCEPTANCE.md`
+- `docs/progress_log.md`
+- `tests/test_cli_contracts.py`
+
+Commands run:
+
+```bash
+pytest tests/test_cli_contracts.py
+bash scripts/verify_goal4.sh
+pytest
+bash scripts/verify_goal1.sh
+bash scripts/verify_goal2.sh
+bash scripts/verify_goal3.sh
+bash scripts/verify_goal4.sh
+find . -maxdepth 3 -type f | sort
+git status
+```
+
+Known limitations:
+- The verifier uses tiny generated fixtures and does not validate real biological datasets.
+- No real data was downloaded.
+- Generated outputs under `outputs/` and `data/processed/` remain ignored and should not be committed.
+- In the Codex sandbox, `bash` may require outside-sandbox execution because WSL Bash can fail with `E_ACCESSDENIED`.
+
+Next recommended step:
+Preserve the Goal 4 acceptance repair, then proceed to `02_Codex_Goals/Goal 5 - Cloud 4090 Training.md`.
+
+### 2026-07-06 - Goal 4.5 real-data smoke workflow
+
+Added a minimal local real-data smoke workflow for inspecting and preprocessing tiny candidate datasets without downloading any external data.
+
+Files created:
+- `scripts/inspect_dataset.py`
+- `scripts/preprocess_data.py`
+- `docs/real_data_smoke_test.md`
+- `scripts/verify_goal4_real_smoke.sh`
+- `tests/test_real_data_smoke.py`
+
+Files updated:
+- `docs/ACCEPTANCE.md`
+- `docs/progress_log.md`
+- `tests/test_cli_contracts.py`
+
+Commands run:
+
+```bash
+pytest tests/test_real_data_smoke.py tests/test_cli_contracts.py
+pytest
+bash scripts/verify_goal1.sh
+bash scripts/verify_goal2.sh
+bash scripts/verify_goal3.sh
+bash scripts/verify_goal4.sh
+bash scripts/verify_goal4_real_smoke.sh
+find . -maxdepth 3 -type f | sort
+git status
+```
+
+Known limitations:
+- The workflow uses tiny local fixtures and schema checks only; it is not biological validation.
+- Missing local dataset paths fail clearly and no download is attempted.
+- H5AD loading still requires optional `anndata`.
+- Generated smoke artifacts under `outputs/` remain ignored and should not be committed.
+- Goal 5 cloud training was not implemented.
+
+Next recommended step:
+Preserve the Goal 4.5 workflow, then proceed to `02_Codex_Goals/Goal 5 - Cloud 4090 Training.md`.

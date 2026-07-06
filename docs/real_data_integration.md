@@ -1,30 +1,48 @@
 # Real Data Integration Plan
 
 ## Status
-Real data integration is planned after the toy pipeline is stable.
+Real data integration scaffolding exists. The repository can validate tiny candidate `.csv`, `.npz`, and optionally `.h5ad` files against a minimal AnnData-like schema, map perturbation labels to canonical MVP actions, and map HDF aging metadata into MVP context conventions.
+
+No real datasets are included. No dataset downloads happen automatically.
 
 ## Supported Formats
-Future loaders should support:
-- `.h5ad`
-- `.csv`
-- `.npz`
+Current loader interfaces:
+- `.csv` via `src/hycell/data_loaders.py`
+- `.npz` via `src/hycell/data_loaders.py`
+- `.h5ad` via optional `anndata`; if `anndata` is missing, the loader raises an actionable dependency message.
+
+Validation CLI:
+
+```bash
+python scripts/validate_dataset.py --input path/to/dataset.csv --schema configs/real_data_schema.yaml
+```
 
 ## Required Validation
-- AnnData schema validation.
-- Required observation fields.
-- Required variable/gene identifiers.
-- Perturbation/action label mapping.
-- Timepoint or condition metadata when available.
-- Explicit warnings for missing or ambiguous fields.
+- AnnData-like schema validation through `AnnDataSchemaValidator`.
+- Required observation fields: `cell_id`, `perturbation`, `timepoint`, and `cell_system`.
+- Required gene/variable identifiers through `var_names` or CSV gene columns.
+- Perturbation/action label mapping through `PerturbationAdapter`.
+- HDF context mapping through `HDFAgingMetadataAdapter`.
+- Explicit errors for missing required fields, empty perturbations, shape mismatches, duplicate IDs, duplicate gene names, and ambiguous perturbation labels.
+- Explicit warnings for unexpected cell-system values.
 
 ## HDF Aging Adapter
-The HDF aging adapter should map real dataset metadata into the MVP action, context, and readout conventions.
+`HDFAgingMetadataAdapter` maps validated metadata into:
+- `cell_id`
+- `original_perturbation`
+- `canonical_action`
+- `mapping_status`
+- `timepoint`
+- `cell_system`
+- `adapter_label`
+- `context_label`
 
 ## Perturbation Adapter
-The perturbation adapter should translate dataset-specific perturbation names into canonical MVP action labels while preserving original labels.
+`PerturbationAdapter` translates dataset-specific perturbation labels into canonical MVP action labels while preserving the original label. Unknown labels map to `canonical_action = "unknown"` with `mapping_status = "unknown"` so downstream code can fail or warn explicitly.
 
 ## Data Safety
 - Do not download large datasets automatically.
 - Do not commit large real datasets.
 - Keep derived outputs in `outputs/`.
 - Document data source, license, preprocessing, and limitations before use.
+- Validation success only means the file has the expected shape and metadata fields; it does not imply biological quality.

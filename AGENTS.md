@@ -35,6 +35,18 @@ Where `b_t` is the biological belief state, `a_t` is an intervention/action, `c_
 - Keep toy fixtures small and deterministic.
 - Prefer explicit CLI verification commands in documentation and goal files.
 - If tests cannot be run, record why in `docs/progress_log.md`.
+- For completed goals, run the matching `scripts/verify_goal*.sh` contract script when it exists.
+- Every completed goal should have a matching `scripts/verify_goal*.sh` contract script; if one is missing, add it before relying on local acceptance.
+- Treat `pytest` as necessary but not sufficient: required CLI commands must also run successfully.
+
+## Repeated Failure Patterns To Guard Against
+- Missing `pyproject.toml` or `requirements.txt` can make package and dependency verification fail even when source tests pass.
+- Missing CLI scripts can leave documented commands broken despite green unit tests.
+- Mismatched file names between goal files, docs, scripts, and tests can cause false completion claims.
+- Missing dependencies should be declared in project metadata and should fail with clear messages.
+- Tests can pass while CLI commands fail; always run documented CLIs and verifier scripts for the active goal.
+- Generated artifacts, checkpoints, caches, and data outputs must stay ignored and must not be committed.
+- If a final command fails, do not mark the goal complete until the same command or a justified equivalent verification passes.
 
 ## Documentation Requirements
 - Keep `docs/progress_log.md` current after meaningful work.
