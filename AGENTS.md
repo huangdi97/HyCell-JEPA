@@ -38,6 +38,7 @@ Where `b_t` is the biological belief state, `a_t` is an intervention/action, `c_
 - For completed goals, run the matching `scripts/verify_goal*.sh` contract script when it exists.
 - Every completed goal should have a matching `scripts/verify_goal*.sh` contract script; if one is missing, add it before relying on local acceptance.
 - Treat `pytest` as necessary but not sufficient: required CLI commands must also run successfully.
+- Before any release or milestone claim, run `scripts/verify_release.sh` if it exists.
 
 ## Repeated Failure Patterns To Guard Against
 - Missing `pyproject.toml` or `requirements.txt` can make package and dependency verification fail even when source tests pass.

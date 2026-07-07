@@ -6,13 +6,13 @@
 - Keep entries factual. Do not present toy-data behavior as biological discovery.
 
 ## Current Status
-Goal 7 GSE130973 real-data training smoke is complete. The repository has the toy pipeline, compact JEPA model, HDF Adapter, verifier, planner, benchmark/demo CLIs, acceptance hardening, Goal 4 real-data loaders/schema/adapters, Goal 4.5 smoke workflow, cloud workflow scaffolding, a verified GSE130973 ingestion path, and a verified lightweight real-matrix training smoke path.
+Goal 8 HyCell-JEPA v0.1 GitHub portfolio release is complete. The repository has the toy pipeline, compact JEPA model, HDF Adapter, verifier, planner, benchmark/demo CLIs, acceptance hardening, Goal 4 real-data loaders/schema/adapters, Goal 4.5 smoke workflow, cloud workflow scaffolding, a verified GSE130973 ingestion path, a verified lightweight real-matrix training smoke path, and verified v0.1 release documentation.
 
 ## Current Milestone
-Milestone 7: real-matrix encoder smoke on the GSE130973 processed subset.
+Milestone 8: v0.1 GitHub portfolio release.
 
 ## Next Action
-Preserve Goal 7, then add metadata-aware filtering only after reliable sample metadata or cell-type annotations are available.
+Preserve the v0.1 portfolio release state, then pursue metadata-aware GSE130973 annotation before HDF-specific real-data modeling.
 
 ## Entries
 
@@ -842,3 +842,44 @@ Known limitations:
 
 Next recommended step:
 Add reliable metadata or cell-type annotations before attempting an HDF/fibroblast-specific subset or any biologically meaningful real-data modeling.
+
+### 2026-07-07 - Goal 8 v0.1 GitHub portfolio release
+
+Polished HyCell-JEPA into a v0.1 GitHub portfolio release for AI4Science, AI drug discovery, AI product, and agent-engineering review. The release documentation now explains what the project does, how to reproduce it, what has been validated, and what must not be claimed.
+
+Files created:
+- `docs/roadmap.md`
+- `docs/release_v0.1.md`
+- `scripts/verify_release.sh`
+
+Files updated:
+- `AGENTS.md`
+- `Makefile`
+- `README.md`
+- `docs/ACCEPTANCE.md`
+- `docs/benchmark_report.md`
+- `docs/data_card.md`
+- `docs/design_summary.md`
+- `docs/limitations.md`
+- `docs/model_card.md`
+- `docs/progress_log.md`
+- `tests/test_cli_contracts.py`
+
+Commands run:
+
+```bash
+pytest
+bash scripts/verify_release.sh
+find . -maxdepth 3 -type f | sort
+git status
+```
+
+Known limitations:
+- v0.1 remains an engineering MVP and portfolio release, not a validated biological discovery system.
+- Toy metrics and planner outputs are software smoke results only.
+- GSE130973 smoke workflows are real-matrix engineering validation only.
+- GSE130973 smoke data remains unfiltered human skin single-cell data with unknown age and state labels.
+- No raw data, processed data, outputs, checkpoints, embeddings, `.npz`, `.npy`, `.h5ad`, or `.zip` files should be committed.
+
+Next recommended step:
+After preserving v0.1, add reliable GSE130973 metadata and cell-type annotation before attempting an HDF/fibroblast-specific real-data subset.

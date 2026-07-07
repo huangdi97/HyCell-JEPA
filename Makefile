@@ -1,4 +1,4 @@
-.PHONY: verify verify-goal1 verify-goal2 verify-goal3 verify-goal4 verify-real-smoke verify-goal5 verify-goal6 verify-goal7 train-local train-cloud train-real-smoke eval-real-smoke package-results demo
+.PHONY: verify verify-release verify-goal1 verify-goal2 verify-goal3 verify-goal4 verify-real-smoke verify-goal5 verify-goal6 verify-goal7 train-local train-cloud train-real-smoke eval-real-smoke package-results demo
 
 PYTHON ?= python
 STREAMLIT ?= streamlit
@@ -13,6 +13,9 @@ verify:
 	bash scripts/verify_goal5.sh
 	bash scripts/verify_goal6.sh
 	bash scripts/verify_goal7.sh
+
+verify-release:
+	bash scripts/verify_release.sh
 
 verify-goal1:
 	bash scripts/verify_goal1.sh

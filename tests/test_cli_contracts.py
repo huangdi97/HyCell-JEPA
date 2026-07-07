@@ -62,6 +62,7 @@ def test_acceptance_verifier_scripts_exist_and_use_strict_bash() -> None:
         "verify_goal5.sh",
         "verify_goal6.sh",
         "verify_goal7.sh",
+        "verify_release.sh",
     ):
         path = ROOT / "scripts" / script_name
         assert path.is_file()
