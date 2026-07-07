@@ -6,13 +6,13 @@
 - Keep entries factual. Do not present toy-data behavior as biological discovery.
 
 ## Current Status
-Goal 8 HyCell-JEPA v0.1 GitHub portfolio release is complete. The repository has the toy pipeline, compact JEPA model, HDF Adapter, verifier, planner, benchmark/demo CLIs, acceptance hardening, Goal 4 real-data loaders/schema/adapters, Goal 4.5 smoke workflow, cloud workflow scaffolding, a verified GSE130973 ingestion path, a verified lightweight real-matrix training smoke path, and verified v0.1 release documentation.
+Goal 8 HyCell-JEPA v0.1 GitHub portfolio release is complete, Goal 8.1 v0.1.1 Streamlit demo polish is complete, and Goal 8.2 v0.1.1 documentation polish is complete. The repository has the toy pipeline, compact JEPA model, HDF Adapter, verifier, planner, benchmark/demo CLIs, acceptance hardening, Goal 4 real-data loaders/schema/adapters, Goal 4.5 smoke workflow, cloud workflow scaffolding, a verified GSE130973 ingestion path, a verified lightweight real-matrix training smoke path, verified v0.1 release documentation, and an improved portfolio presentation surface.
 
 ## Current Milestone
-Milestone 8: v0.1 GitHub portfolio release.
+Milestone 8.2: v0.1.1 README and documentation portfolio polish.
 
 ## Next Action
-Preserve the v0.1 portfolio release state, then pursue metadata-aware GSE130973 annotation before HDF-specific real-data modeling.
+Preserve the v0.1.1 portfolio release state before pursuing metadata-aware GSE130973 annotation.
 
 ## Entries
 
@@ -883,3 +883,99 @@ Known limitations:
 
 Next recommended step:
 After preserving v0.1, add reliable GSE130973 metadata and cell-type annotation before attempting an HDF/fibroblast-specific real-data subset.
+
+### 2026-07-07 - Goal 8.1 v0.1.1 Streamlit demo polish
+
+Polished the Streamlit demo into a GitHub portfolio review surface without changing model math, training outputs, or biological claims.
+
+Files created:
+- `docs/assets/README_ASSETS.md`
+
+Files updated:
+- `Makefile`
+- `README.md`
+- `docs/progress_log.md`
+- `scripts/demo_app.py`
+- `src/hycell/demo/app.py`
+
+Changes made:
+- Updated the demo title, subtitle, and top engineering-only warning.
+- Added top metric cards for toy transitions, compact readouts, verifier status, GSE130973 smoke dataset, and release version.
+- Reorganized the demo into Toy Transition, Planner, Verifier, Real-Data Smoke, and About tabs.
+- Replaced primary current/predicted JSON display with a compact readout table while preserving raw JSON expanders.
+- Added a readable Top-K planner table and explicit non-recommendation warning.
+- Added readable verifier status and issue display while preserving raw JSON.
+- Added visible GSE130973 smoke workflow status and commands.
+- Updated the demo command to `python -m streamlit run scripts/demo_app.py`.
+- Kept the package-level demo path aligned with the polished presentation.
+- Added a screenshot asset placeholder path without creating a fake screenshot.
+
+Commands run:
+
+```bash
+pytest
+bash scripts/verify_release.sh
+python -m py_compile scripts/demo_app.py src/hycell/demo/app.py
+find . -maxdepth 3 -type f | sort
+git status
+```
+
+Observed results:
+- `pytest`: 55 passed.
+- `bash scripts/verify_release.sh`: HyCell-JEPA v0.1 release acceptance passed.
+- `python -m py_compile scripts/demo_app.py src/hycell/demo/app.py`: passed after rerunning outside the sandbox because Windows denied writing the `.pyc` cache file in the sandbox.
+- `find . -maxdepth 3 -type f | sort`: completed.
+- `git status`: showed only the expected demo-polish file changes and `docs/assets/` as untracked.
+
+Known limitations:
+- The demo remains an engineering validation UI only.
+- Planner outputs remain toy compact-state demonstrations, not therapy recommendations.
+- GSE130973 smoke status remains unfiltered skin single-cell data with unknown age and state labels, not HDF-only data.
+- No generated screenshots were created.
+
+Next recommended step:
+Preserve v0.1.1 before adding metadata-aware GSE130973 annotation.
+
+### 2026-07-07 - Goal 8.2 v0.1.1 README and docs polish
+
+Improved the portfolio documentation for GitHub visitors, recruiters, AI4Science engineers, and AI product/agent engineering reviewers without changing model behavior or adding biological claims.
+
+Files updated:
+- `README.md`
+- `docs/benchmark_report.md`
+- `docs/design_summary.md`
+- `docs/PROJECT_BRIEF.md`
+- `docs/progress_log.md`
+- `docs/release_v0.1.md`
+- `docs/roadmap.md`
+
+Changes made:
+- Added README badges, 30-second summary, reviewer guide, AI4Science positioning, virtual-cell/foundation-model relationship, and a v0.1 capability table.
+- Moved visible limitations before planner and benchmark outputs.
+- Clarified GSE130973 as a real single-cell matrix smoke workflow over unfiltered human skin single-cell data, not HDF-only, with unknown age/state labels from the three GEO files alone.
+- Updated design summary and release notes to describe v0.1.1 as presentation polish, not a model change.
+- Added clear benchmark framing for what the metrics prove and do not prove.
+- Updated the roadmap with v0.1.1, v0.2, and v0.3 milestones.
+
+Commands run:
+
+```bash
+pytest
+bash scripts/verify_release.sh
+find . -maxdepth 3 -type f | sort
+git status
+```
+
+Observed results:
+- `pytest`: 55 passed.
+- `bash scripts/verify_release.sh`: HyCell-JEPA v0.1 release acceptance passed.
+- `find . -maxdepth 3 -type f | sort`: completed.
+- `git status`: showed only the expected documentation/demo polish source changes and `docs/assets/` as untracked.
+
+Known limitations:
+- Documentation polish does not add new biological validation.
+- Toy and GSE130973 smoke metrics remain engineering evidence only.
+- No datasets, generated outputs, checkpoints, screenshots, `.npz`, `.npy`, `.h5ad`, or `.zip` artifacts were intentionally added.
+
+Next recommended step:
+Preserve v0.1.1 documentation polish before metadata-aware GSE130973 annotation.

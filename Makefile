@@ -1,7 +1,6 @@
 .PHONY: verify verify-release verify-goal1 verify-goal2 verify-goal3 verify-goal4 verify-real-smoke verify-goal5 verify-goal6 verify-goal7 train-local train-cloud train-real-smoke eval-real-smoke package-results demo
 
 PYTHON ?= python
-STREAMLIT ?= streamlit
 
 verify:
 	$(PYTHON) -m pytest
@@ -58,4 +57,4 @@ package-results:
 	$(PYTHON) scripts/package_results.py --out outputs/hycell_cloud_results.zip
 
 demo:
-	$(STREAMLIT) run scripts/demo_app.py
+	$(PYTHON) -m streamlit run scripts/demo_app.py

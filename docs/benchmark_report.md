@@ -10,6 +10,24 @@ HyCell-JEPA v0.1 has three benchmark-style checks:
 
 All metrics below are engineering smoke metrics. They do not establish biological validity.
 
+## What This Proves
+
+- The toy transition pipeline can generate, score, train, evaluate, and report compact readout transitions reproducibly.
+- The verifier and planner CLIs run against the toy compact-state workflow and produce structured reports.
+- The GSE130973 workflow can inspect, prepare, validate, summarize, and run an encoder-style smoke pass on a real single-cell matrix.
+- Release verification can rerun the project contracts end to end.
+
+## What This Does Not Prove
+
+- Biological mechanisms.
+- Rejuvenation or regeneration.
+- HDF-specific behavior in GSE130973.
+- Fibroblast-only or HDF-only real-data conclusions.
+- Wet-lab validity.
+- Clinical usefulness.
+- Correct intervention planning.
+- Full virtual-cell or transcriptome foundation-model capability.
+
 ## Toy Benchmark
 
 Command:
@@ -80,18 +98,6 @@ The toy MSE values show that the deterministic compact transition pipeline can f
 The planner distances show that the search code can rank toy action sequences under a compact target-state distance.
 
 The real-data smoke metrics show that the project can load, summarize, and project a real expression matrix.
-
-## What Metrics Do Not Mean
-
-These metrics do not prove:
-
-- Biological mechanisms.
-- Rejuvenation.
-- Regeneration.
-- HDF-specific behavior in GSE130973.
-- Wet-lab validity.
-- Clinical usefulness.
-- Correct intervention planning.
 
 ## Next Evaluation Plan
 

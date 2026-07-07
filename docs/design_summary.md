@@ -1,6 +1,19 @@
 # Design Summary
 
-HyCell-JEPA v0.1 is a Universal-to-Specific CellWorld engineering prototype. It keeps the first system small enough to inspect and run locally while preserving the architectural shape needed for future real biological datasets.
+HyCell-JEPA v0.1 is a Universal-to-Specific cellular world model engineering prototype for HDF aging, regeneration, and perturbation-planning workflows. It keeps the first system small enough to inspect and run locally while preserving the architectural shape needed for future real biological datasets.
+
+The project is a portfolio-quality engineering MVP, not a biological discovery product. v0.1.1 polishes the documentation and Streamlit presentation around the existing verified v0.1 system without changing the model math.
+
+## 30-Second Architecture Summary
+
+HyCell-JEPA models cell-state change as a transition over compact biological belief states:
+
+- toy HDF-like cells are generated and scored into compact readouts;
+- encoders convert state, action, context, and adapter labels into model inputs;
+- a small JEPA-style transition core predicts the next compact state;
+- a verifier flags overclaim and sanity risks;
+- a planner ranks toy action sequences for demonstration only;
+- real-data smoke workflows test ingestion, schema validation, and encoder-style projection on GSE130973 without inventing labels.
 
 ## Universal-To-Specific CellWorld Idea
 
@@ -15,7 +28,13 @@ b_t + a_t + c_t + h_t -> b_{t+1}
 - `c_t`: context, such as timepoint transition or dataset context.
 - `h_t`: adapter state for a specific cell system.
 
-The v0.1 implementation uses toy HDF-like states for transition learning and GSE130973 real-matrix smoke workflows for ingestion and encoder plumbing.
+The v0.1 implementation uses toy HDF-like states for transition learning and GSE130973 real single-cell matrix smoke workflows for ingestion and encoder plumbing.
+
+## Relationship To Virtual Cell And Transcriptome Foundation Models
+
+HyCell-JEPA is not a complete virtual cell, does not generate whole transcriptomes, and does not reproduce Lingshu-Cell-scale diffusion. It is a compact transition prototype that focuses on the engineering shell around a cellular world model: data contracts, adapter routing, verifier outputs, planner reporting, reproducible scripts, and visible limitations.
+
+Future versions could replace the toy compact readouts or small encoder with stronger biological representations. v0.1 deliberately proves only that the local software path and review surface are coherent.
 
 ## Bio-State Encoder
 
@@ -75,7 +94,7 @@ Goal 6 added GSE130973 processed GEO Matrix Market ingestion:
 - handles genes x cells orientation
 - writes a capped cells x genes NPZ
 
-The output is unfiltered human skin single-cell data with unknown age and state labels. It is not HDF-only or fibroblast-only.
+The output is a real single-cell matrix smoke artifact. It is unfiltered human skin single-cell data with unknown age and state labels from the three GEO files alone. It is not HDF-only or fibroblast-only.
 
 Goal 7 added a real-matrix smoke workflow:
 
@@ -93,3 +112,9 @@ Goal 5 added a cloud-safe workflow scaffold for RTX 4090 experimentation:
 - small result packaging
 
 It does not start remote jobs automatically and does not download large datasets.
+
+## What v0.1 Proves And Does Not Prove
+
+v0.1 proves that the repository has a runnable, testable engineering path from toy compact states through transition modeling, verifier/planner reporting, demo presentation, real-matrix smoke ingestion, and release verification.
+
+v0.1 does not prove biological mechanisms, rejuvenation, regeneration, clinical utility, HDF-specific behavior in GSE130973, full virtual-cell simulation, or intervention recommendations.

@@ -53,7 +53,7 @@ python scripts/make_toy_data.py --config configs/toy_data.yaml
 python scripts/score_gene_sets.py --input outputs/toy_data/toy_cells.csv --config configs/gene_sets.yaml
 python scripts/train_jepa.py --config configs/jepa_toy.yaml
 python scripts/benchmark_toy.py --config configs/benchmark_toy.yaml
-streamlit run scripts/demo_app.py
+python -m streamlit run scripts/demo_app.py
 pytest
 ```
 

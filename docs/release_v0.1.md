@@ -21,6 +21,20 @@ HyCell-JEPA v0.1 is an engineering MVP and portfolio release. It includes:
 - Result packaging.
 - Goal 1-7 and release verification scripts.
 
+## v0.1.1 Presentation Polish
+
+v0.1.1 keeps the same engineering MVP behavior and improves how the project is presented to GitHub visitors, recruiters, AI4Science engineers, and AI product/agent engineering reviewers.
+
+Included polish:
+
+- README badges, 30-second summary, capability table, reviewer guide, and AI4Science positioning.
+- Clearer relationship to virtual-cell and transcriptome foundation-model work.
+- Limitations visible before planner and benchmark examples.
+- Streamlit demo UI polish with tabs, metric cards, readable transition/planner/verifier views, and GSE130973 smoke status.
+- `docs/assets/README_ASSETS.md` documenting where real screenshots should go.
+
+No model architecture, model math, training outputs, dataset download behavior, or biological claims were changed for v0.1.1.
+
 ## How To Reproduce
 
 Install dependencies:
